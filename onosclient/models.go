@@ -1,5 +1,34 @@
 package onosclient
 
+type Flows struct {
+	Flows []Flow `json:"flows"`
+}
+
+type Flow struct {
+	AppID       string    `json:"appid"`
+	Bytes       int       `json:"bytes,omitempty"`
+	DeviceID    string    `json:"deviceid,omitempty"`
+	GroupID     int       `json:"groupid,omitempty"`
+	ID          string    `json:"id,omitempty"`
+	IsPermanent bool      `json:"ispermanent,omitempty"`
+	LastSeen    int       `json:"lastseen,omitempty"`
+	Life        int       `json:"life,omitempty"`
+	LiveType    string    `json:"livetype,omitempty"`
+	Packets     int       `json:"packets,omitempty"`
+	Priority    int       `json:"priority,omitempty"`
+	State       string    `json:"state,omitempty"`
+	TableID     int       `json:"tableid,omitempty"`
+	TableName   string    `json:"tablename,omitempty"`
+	Timeout     int       `json:"timeout,omitempty"`
+	Selector    Selector  `json:"selector,omitempty"`
+	Treatment   Treatment `json:"treatment,omitempty"`
+}
+
+type Instruction struct {
+	Port string `json:"port",omitempty`
+	Type string `json:"type",omitempty`
+}
+
 type Intents struct {
 	Intent []Intent `json:"intents"`
 }
@@ -18,9 +47,11 @@ type Intent struct {
 	One         string        `json:"one"`
 	Two         string        `json:"two"`
 }
+
 type Selector struct {
 	Criteria []Criteria `json:"criteria,omitempty"`
 }
+
 type Criteria struct {
 	EthType string `json:"ethtype,omitempty"`
 	Mac     string `json:"mac,omitempty"`
