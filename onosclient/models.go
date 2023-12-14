@@ -1,4 +1,4 @@
-package main
+package onosclient
 
 type Intents struct {
 	Intent []Intent `json:"intents"`

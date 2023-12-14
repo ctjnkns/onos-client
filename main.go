@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"onosclient/onosclient"
 )
 
 func main() {
@@ -11,7 +12,7 @@ func main() {
 	username := "onos"
 	password := "rocks"
 
-	client, err := NewClient(HostURL, username, password)
+	client, err := onosclient.NewClient(HostURL, username, password)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -22,7 +23,7 @@ func main() {
 	}
 	fmt.Sprintf("%q", intents)
 
-	intent := Intent{
+	intent := onosclient.Intent{
 		Type:  "HostToHostIntent",
 		AppID: "org.onosproject.cli",
 		One:   "00:00:00:00:00:01/None",
@@ -39,7 +40,7 @@ func main() {
 	fmt.Println("\nGetting intents")
 	fmt.Println(intents)
 
-	intent = Intent{
+	intent = onosclient.Intent{
 		AppID: intents.Intent[0].AppID,
 		Key:   intents.Intent[0].Key,
 	}
@@ -55,16 +56,18 @@ func main() {
 	fmt.Println("\nGetting intents")
 	fmt.Println(intents)
 
-	intent = Intent{
-		AppID: intents.Intent[0].AppID,
-		Key:   intents.Intent[0].Key,
+	intent = onosclient.Intent{
+		AppID: intents.Intent[1].AppID,
+		Key:   intents.Intent[1].Key,
 	}
+
+	fmt.Println("\nGetting intent")
+	fmt.Println(intent)
 
 	intent, err = client.GetIntent(intent)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("\nGetting intent")
 	fmt.Println(intent)
 	fmt.Println(intent.Type)
 

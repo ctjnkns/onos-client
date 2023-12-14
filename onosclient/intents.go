@@ -1,4 +1,4 @@
-package main
+package onosclient
 
 import (
 	"encoding/json"
