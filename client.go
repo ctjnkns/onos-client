@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"fmt"
@@ -6,9 +6,6 @@ import (
 	"net/http"
 	"time"
 )
-
-// HostURL - Default Onos URL
-const HostURL string = "http://localhost:19090"
 
 // Client
 type Client struct {
@@ -32,6 +29,7 @@ func NewClient(host, username string, password string) (*Client, error) {
 }
 
 func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+	req.SetBasicAuth(c.Username, c.Password)
 	res, err := c.HTTPClient.Do(req)
 
 	if err != nil {
@@ -44,10 +42,9 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 		return nil, err
 	}
 
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated && res.StatusCode != http.StatusNoContent {
 		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
 	}
 
 	return body, err
-
 }
