@@ -54,4 +54,18 @@ func main() {
 	intents, err = client.GetIntents()
 	fmt.Println("\nGetting intents")
 	fmt.Println(intents)
+
+	intent = Intent{
+		AppID: intents.Intent[0].AppID,
+		Key:   intents.Intent[0].Key,
+	}
+
+	intent, err = client.GetIntent(intent)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("\nGetting intent")
+	fmt.Println(intent)
+	fmt.Println(intent.Type)
+
 }
