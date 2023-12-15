@@ -71,6 +71,13 @@ func (c *Client) CreateIntent(intent Intent) error {
 	return nil
 }
 
+func (c *Client) CreateIntents(intents Intents) error {
+	for _, intent := range intents.Intent {
+		fmt.Println(intent)
+	}
+	return nil
+}
+
 func (c *Client) DeleteIntent(intent Intent) error {
 	//this should return 200 for success and 204 for failure (no content), but onos api currently always returns 204 so there's no way to check the success/failure besides running another get and comparing.
 

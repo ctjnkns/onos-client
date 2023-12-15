@@ -1,7 +1,7 @@
 package onosclient
 
 type Flows struct {
-	Flows []Flow `json:"flows"`
+	Flow []Flow `json:"flows"`
 }
 
 type Flow struct {
