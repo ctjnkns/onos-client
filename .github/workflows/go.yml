@@ -21,7 +21,11 @@ jobs:
       with:
         go-version: '1.20'
 
-    - name: Test
+    - name: Change Directory
     - run: cd ./onosclient
+    
+    - name: Confirm Directory
     - run: pwd
+    
+    - name: Test
     - run: go test -v ./...
