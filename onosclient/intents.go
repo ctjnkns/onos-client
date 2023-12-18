@@ -173,6 +173,5 @@ func (c *Client) DeleteIntent(intent Intent) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
