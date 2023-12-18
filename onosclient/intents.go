@@ -56,6 +56,8 @@ func (c *Client) GetIntents() (Intents, error) {
 func (c *Client) GetIntent(intent Intent) (Intent, error) {
 	resp := Intent{}
 	if intent.AppID == "" || intent.Key == "" {
+		fmt.Println("error")
+
 		return resp, errors.New("invalid intent; must include AppID, Key")
 	}
 
@@ -100,6 +102,18 @@ func (c *Client) CreateIntent(intent Intent) (Intent, error) {
 	}
 
 	resp, err = c.GetIntent(intent)
+	//fmt.Printf("updated intent: %q; current intent: %q\n", intent.Two, resp.Two)
+	attempts := 0
+	//fmt.Println("Attempt:", attempts)
+	for err != nil {
+		if attempts >= 5 {
+			break
+		}
+		fmt.Println("Retrying:", attempts)
+		time.Sleep(250 * time.Millisecond)
+		resp, err = c.GetIntent(intent)
+		//fmt.Println("\nGot: ", resp)
+	}
 	if err != nil {
 		return resp, err
 	}
@@ -128,9 +142,9 @@ func (c *Client) UpdateIntent(intent Intent) (Intent, error) {
 		return resp, err
 	}
 
-	fmt.Printf("updated intent: %q; current intent: %q\n", intent.Two, resp.Two)
+	//fmt.Printf("updated intent: %q; current intent: %q\n", intent.Two, resp.Two)
 	attempts := 0
-	fmt.Println("Attempt:", attempts)
+	//fmt.Println("Attempt:", attempts)
 	for resp.One != intent.One || resp.Two != intent.Two || resp.Key != intent.Key || resp.AppID != intent.AppID {
 		if attempts >= 5 {
 			break
