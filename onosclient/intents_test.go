@@ -560,4 +560,213 @@ func TestGetIntents_ReturnExpectedJSON(t *testing.T) {
 	}
 }
 
-//add http test tests for create and update, including delay
+func TestCreateIntent_ReturnExpectedJSON(t *testing.T) {
+	want := Intent{
+		AppID:     "org.onosproject.cli",
+		ID:        "0x300154",
+		Key:       "0x100005",
+		State:     "FAILED",
+		Type:      "HostToHostIntent",
+		Resources: []string{"00:00:00:00:00:01/None", "00:00:00:00:00:99/None"},
+		//Selector:    &Selector
+		//Treatment:   *Treatment
+		Priority: 100,
+		//Constraints: []Constraints
+		One: "00:00:00:00:00:01/None",
+		Two: "00:00:00:00:00:99/None",
+	}
+
+	ts := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "testdata/intent.json")
+		}))
+	defer ts.Close()
+	c, err := NewClient("host", "username", "password")
+	if err != nil {
+		t.Fatal("Error creating client")
+	}
+	c.HTTPClient = ts.Client()
+	c.HostURL = ts.URL
+
+	intent := Intent{
+		AppID:     "org.onosproject.cli",
+		ID:        "0x300154",
+		Key:       "0x100005",
+		State:     "FAILED",
+		Type:      "HostToHostIntent",
+		Resources: []string{"00:00:00:00:00:01/None", "00:00:00:00:00:99/None"},
+		//Selector:    &Selector
+		//Treatment:   *Treatment
+		Priority: 100,
+		//Constraints: []Constraints
+		One: "00:00:00:00:00:01/None",
+		Two: "00:00:00:00:00:99/None",
+	}
+	got, err := c.CreateIntent(intent)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.AppID != want.AppID {
+		t.Errorf("Got AppID: %s,, wanted: %s", got.AppID, want.AppID)
+	} else {
+		t.Logf("AppID Passed with Value: %s", want.AppID)
+	}
+	if got.ID != want.ID {
+		t.Errorf("Got ID: %s,, wanted: %s", got.ID, want.ID)
+	} else {
+		t.Logf("ID Passed with Value: %s", want.ID)
+	}
+	if got.Key != want.Key {
+		t.Errorf("Got Key: %s,, wanted: %s", got.Key, want.Key)
+	} else {
+		t.Logf("Key Passed with Value: %s", want.Key)
+	}
+	if got.State != want.State {
+		t.Errorf("Got State: %s,, wanted: %s", got.State, want.State)
+	} else {
+		t.Logf("State Passed with Value: %s", want.State)
+	}
+	if got.Type != want.Type {
+		t.Errorf("Got Type: %s,, wanted: %s", got.Type, want.Type)
+	} else {
+		t.Logf("Type Passed with Value: %s", want.Type)
+	}
+	if !reflect.DeepEqual(got.Resources, want.Resources) {
+		t.Errorf("Got Resources: %q,, wanted: %q", got.Resources, want.Resources)
+	} else {
+		t.Logf("Resources Passed with Value: %q", want.Resources)
+	}
+	if got.Priority != want.Priority {
+		t.Errorf("Got Priority: %d,, wanted: %d", got.Priority, want.Priority)
+	} else {
+		t.Logf("AppID Passed with Value: %d", want.Priority)
+	}
+	if got.One != want.One {
+		t.Errorf("Got One: %s,, wanted: %s", got.One, want.One)
+	} else {
+		t.Logf("One Passed with Value: %s", want.One)
+	}
+	if got.Two != want.Two {
+		t.Errorf("Got Two: %s,, wanted: %s", got.Two, want.Two)
+	} else {
+		t.Logf("Two Passed with Value: %s", want.Two)
+	}
+}
+
+func TestCUpdateIntent_ReturnExpectedJSON(t *testing.T) {
+	want := Intent{
+		AppID:     "org.onosproject.cli",
+		ID:        "0x300154",
+		Key:       "0x100005",
+		State:     "FAILED",
+		Type:      "HostToHostIntent",
+		Resources: []string{"00:00:00:00:00:01/None", "00:00:00:00:00:99/None"},
+		//Selector:    &Selector
+		//Treatment:   *Treatment
+		Priority: 100,
+		//Constraints: []Constraints
+		One: "00:00:00:00:00:01/None",
+		Two: "00:00:00:00:00:99/None",
+	}
+
+	ts := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "testdata/intent.json")
+		}))
+	defer ts.Close()
+	c, err := NewClient("host", "username", "password")
+	if err != nil {
+		t.Fatal("Error creating client")
+	}
+	c.HTTPClient = ts.Client()
+	c.HostURL = ts.URL
+
+	intent := Intent{
+		AppID: "org.onosproject.cli",
+		Key:   "0x100005",
+		State: "FAILED",
+		Type:  "HostToHostIntent",
+		One:   "00:00:00:00:00:01/None",
+		Two:   "00:00:00:00:00:99/None",
+	}
+	got, err := c.CreateIntent(intent)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.AppID != want.AppID {
+		t.Errorf("Got AppID: %s,, wanted: %s", got.AppID, want.AppID)
+	} else {
+		t.Logf("AppID Passed with Value: %s", want.AppID)
+	}
+	if got.ID != want.ID {
+		t.Errorf("Got ID: %s,, wanted: %s", got.ID, want.ID)
+	} else {
+		t.Logf("ID Passed with Value: %s", want.ID)
+	}
+	if got.Key != want.Key {
+		t.Errorf("Got Key: %s,, wanted: %s", got.Key, want.Key)
+	} else {
+		t.Logf("Key Passed with Value: %s", want.Key)
+	}
+	if got.State != want.State {
+		t.Errorf("Got State: %s,, wanted: %s", got.State, want.State)
+	} else {
+		t.Logf("State Passed with Value: %s", want.State)
+	}
+	if got.Type != want.Type {
+		t.Errorf("Got Type: %s,, wanted: %s", got.Type, want.Type)
+	} else {
+		t.Logf("Type Passed with Value: %s", want.Type)
+	}
+	if !reflect.DeepEqual(got.Resources, want.Resources) {
+		t.Errorf("Got Resources: %q,, wanted: %q", got.Resources, want.Resources)
+	} else {
+		t.Logf("Resources Passed with Value: %q", want.Resources)
+	}
+	if got.Priority != want.Priority {
+		t.Errorf("Got Priority: %d,, wanted: %d", got.Priority, want.Priority)
+	} else {
+		t.Logf("AppID Passed with Value: %d", want.Priority)
+	}
+	if got.One != want.One {
+		t.Errorf("Got One: %s,, wanted: %s", got.One, want.One)
+	} else {
+		t.Logf("One Passed with Value: %s", want.One)
+	}
+	if got.Two != want.Two {
+		t.Errorf("Got Two: %s,, wanted: %s", got.Two, want.Two)
+	} else {
+		t.Logf("Two Passed with Value: %s", want.Two)
+	}
+}
+
+// idea for integration tests with docker onos build
+/*
+func TestDeleteIntent_ConfirmDeletion(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "testdata/intent.json")
+		}))
+	defer ts.Close()
+	c, err := NewClient("host", "username", "password")
+	if err != nil {
+		t.Fatal("Error creating client")
+	}
+	c.HTTPClient = ts.Client()
+	c.HostURL = ts.URL
+
+	intent := Intent{
+		AppID: "org.onosproject.cli",
+		Key:   "0x100005",
+	}
+	err = c.DeleteIntent(intent)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = c.GetIntent(intent)
+	if err == nil {
+		t.Fatal("expected error looking up deleted intent, got nil")
+	}
+}
+*/
