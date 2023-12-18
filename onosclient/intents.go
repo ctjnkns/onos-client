@@ -9,48 +9,25 @@ import (
 	"time"
 )
 
-func ParseIntent(body []byte) (Intent, error) {
-	resp := Intent{}
-	err := json.Unmarshal(body, &resp)
-	if err != nil {
-		return resp, err
-	}
-	//fmt.Printf("Parsed Intent: %+v\n", resp)
-	return resp, err
-}
-
-func ParseIntents(body []byte) (Intents, error) {
-	resp := Intents{}
-	err := json.Unmarshal(body, &resp)
-	if err != nil {
-		return resp, err
-	}
-	return resp, err
-}
-
 func (c *Client) GetIntents() (Intents, error) {
-	resp := Intents{}
+	intents := Intents{}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/intents?detail=true", c.HostURL), nil)
 	body, err := c.doRequest(req)
 	if err != nil {
-		return resp, err
+		return intents, err
 	}
 
 	//fmt.Println("String:", string(body))
 
-	/*
-		err = json.Unmarshal(body, &intents)
-		if err != nil {
-			return intents, err
-		}
-	*/
-	//fmt.Println("Go:", intents.Intent[0].Type)
-	resp, err = ParseIntents(body)
+	err = json.Unmarshal(body, &intents)
 	if err != nil {
-		return resp, err
+		return intents, err
 	}
-	return resp, nil
+
+	//fmt.Println("Go:", intents.Intent[0].Type)
+
+	return intents, nil
 }
 
 func (c *Client) GetIntent(intent Intent) (Intent, error) {
@@ -68,16 +45,10 @@ func (c *Client) GetIntent(intent Intent) (Intent, error) {
 		return resp, err
 	}
 
-	resp, err = ParseIntent(body)
+	err = json.Unmarshal(body, &resp)
 	if err != nil {
 		return resp, err
 	}
-	/*
-		err = json.Unmarshal(body, &resp)
-		if err != nil {
-			return resp, err
-		}
-	*/
 
 	return resp, nil
 }
@@ -146,18 +117,6 @@ func (c *Client) UpdateIntent(intent Intent) (Intent, error) {
 
 	return resp, nil
 }
-
-/*
-func (c *Client) CreateIntents(intents Intents) error {
-	for _, intent := range intents.Intent {
-		err := c.CreateIntent(intent)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-*/
 
 func (c *Client) DeleteIntent(intent Intent) error {
 	//this should return 200 for success and 204 for failure (no content), but onos api currently always returns 204 so there's no way to check the success/failure besides running another get and comparing.
