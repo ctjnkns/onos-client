@@ -9,25 +9,48 @@ import (
 	"time"
 )
 
+func ParseIntent(body []byte) (Intent, error) {
+	resp := Intent{}
+	err := json.Unmarshal(body, &resp)
+	if err != nil {
+		return resp, err
+	}
+	//fmt.Printf("Parsed Intent: %+v\n", resp)
+	return resp, err
+}
+
+func ParseIntents(body []byte) (Intents, error) {
+	resp := Intents{}
+	err := json.Unmarshal(body, &resp)
+	if err != nil {
+		return resp, err
+	}
+	return resp, err
+}
+
 func (c *Client) GetIntents() (Intents, error) {
-	intents := Intents{}
+	resp := Intents{}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/intents?detail=true", c.HostURL), nil)
 	body, err := c.doRequest(req)
 	if err != nil {
-		return intents, err
+		return resp, err
 	}
 
 	//fmt.Println("String:", string(body))
 
-	err = json.Unmarshal(body, &intents)
-	if err != nil {
-		return intents, err
-	}
-
+	/*
+		err = json.Unmarshal(body, &intents)
+		if err != nil {
+			return intents, err
+		}
+	*/
 	//fmt.Println("Go:", intents.Intent[0].Type)
-
-	return intents, nil
+	resp, err = ParseIntents(body)
+	if err != nil {
+		return resp, err
+	}
+	return resp, nil
 }
 
 func (c *Client) GetIntent(intent Intent) (Intent, error) {
@@ -45,10 +68,16 @@ func (c *Client) GetIntent(intent Intent) (Intent, error) {
 		return resp, err
 	}
 
-	err = json.Unmarshal(body, &resp)
+	resp, err = ParseIntent(body)
 	if err != nil {
 		return resp, err
 	}
+	/*
+		err = json.Unmarshal(body, &resp)
+		if err != nil {
+			return resp, err
+		}
+	*/
 
 	return resp, nil
 }
@@ -99,17 +128,17 @@ func (c *Client) UpdateIntent(intent Intent) (Intent, error) {
 		return resp, err
 	}
 
-	//fmt.Printf("updated intent: %q; current intent: %q\n", intent.Two, resp.Two)
+	fmt.Printf("updated intent: %q; current intent: %q\n", intent.Two, resp.Two)
 	attempts := 0
-	//fmt.Println("Attempt:", attempts)
+	fmt.Println("Attempt:", attempts)
 	for resp.One != intent.One || resp.Two != intent.Two || resp.Key != intent.Key || resp.AppID != intent.AppID {
 		if attempts >= 5 {
 			break
 		}
-		//fmt.Println("Retrying:", attempts)
-		time.Sleep(100 * time.Millisecond)
+		fmt.Println("Retrying:", attempts)
+		time.Sleep(250 * time.Millisecond)
 		resp, err = c.GetIntent(intent)
-		//fmt.Println("\nGot: ", resp)
+		fmt.Println("\nGot: ", resp)
 		if err != nil {
 			return resp, err
 		}

@@ -1,0 +1,34 @@
+{
+	"type": "HostToHostIntent",
+	"id": "0x300154",
+	"key": "0x100005",
+	"appId": "org.onosproject.cli",
+	"resources": [
+		"00:00:00:00:00:01/None",
+		"00:00:00:00:00:99/None"
+	],
+	"state": "FAILED",
+	"selector": {
+		"criteria": []
+	},
+	"treatment": {
+		"instructions": [
+			{
+				"type": "NOACTION"
+			}
+		],
+		"deferred": []
+	},
+	"priority": 100,
+	"constraints": [
+		{
+			"inclusive": false,
+			"types": [
+				"OPTICAL"
+			],
+			"type": "LinkTypeConstraint"
+		}
+	],
+	"one": "00:00:00:00:00:01/None",
+	"two": "00:00:00:00:00:99/None"
+}
