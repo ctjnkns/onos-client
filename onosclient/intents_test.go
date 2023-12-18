@@ -8,6 +8,8 @@ import (
 	"testing"
 )
 
+// Reference: https://bitfieldconsulting.com/golang/api-client
+
 func TestParseIntent(t *testing.T) {
 	intent, err := os.ReadFile("testdata/intent.json")
 	if err != nil {
