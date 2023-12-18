@@ -1,0 +1,37 @@
+{
+	"intents": [
+		{
+			"type": "HostToHostIntent",
+			"id": "0x40004f",
+			"key": "0x100005",
+			"appId": "org.onosproject.cli",
+			"resources": [
+				"00:00:00:00:00:01/None",
+				"00:00:00:00:00:02/None"
+			],
+			"state": "INSTALLED"
+		},
+		{
+			"type": "HostToHostIntent",
+			"id": "0x40004d",
+			"key": "0x300009",
+			"appId": "org.onosproject.cli",
+			"resources": [
+				"00:00:00:00:00:01/None",
+				"00:00:00:00:00:99/None"
+			],
+			"state": "FAILED"
+		},
+		{
+			"type": "HostToHostIntent",
+			"id": "0x40004e",
+			"key": "0x100006",
+			"appId": "org.onosproject.cli",
+			"resources": [
+				"00:00:00:00:00:02/None",
+				"00:00:00:00:00:88/None"
+			],
+			"state": "FAILED"
+		}
+	]
+}

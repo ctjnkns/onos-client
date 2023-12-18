@@ -30,7 +30,7 @@ type Instruction struct {
 }
 
 type Intents struct {
-	Intent []Intent `json:"intents"`
+	Intents []Intent `json:"intents"`
 }
 
 type Intent struct {
