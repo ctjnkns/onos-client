@@ -10,6 +10,9 @@ func (c *Client) GetFlows() (Flows, error) {
 	flows := Flows{}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/flows", c.HostURL), nil)
+	if err != nil {
+		return flows, err
+	}
 	body, err := c.doRequest(req)
 	if err != nil {
 		return flows, err

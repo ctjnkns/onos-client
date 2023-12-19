@@ -3,6 +3,7 @@ package onosclient
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -35,7 +36,12 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		err := res.Body.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {

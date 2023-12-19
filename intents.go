@@ -54,6 +54,9 @@ func (c *Client) GetIntent(intent Intent) (Intent, error) {
 	}
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/intents/%s/%s", c.HostURL, intent.AppID, intent.Key), nil)
+	if err != nil {
+		return resp, err
+	}
 	req.Header.Add("Accept", "application/json")
 	body, err := c.doRequest(req)
 	if err != nil {
@@ -80,6 +83,9 @@ func (c *Client) CreateIntent(intent Intent) (Intent, error) {
 	}
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/intents", c.HostURL), strings.NewReader(string(rb)))
+	if err != nil {
+		return resp, err
+	}
 	_, err = c.doRequest(req)
 	if err != nil {
 		return resp, err
@@ -145,6 +151,9 @@ func (c *Client) DeleteIntent(intent Intent) error {
 	}
 
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/intents/%s/%s", c.HostURL, intent.AppID, intent.Key), nil)
+	if err != nil {
+		return err
+	}
 	_, err = c.doRequest(req)
 	if err != nil {
 		return err
