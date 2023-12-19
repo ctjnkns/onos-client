@@ -75,3 +75,24 @@ type Constraints struct {
 	Types     []string `json:"types,omitempty"`
 	Type      string   `json:"type,omitempty"`
 }
+
+type Hosts struct {
+	Hosts []Host `json:"hosts"`
+}
+
+type Host struct {
+	ID          string     `json:"id"`
+	Mac         string     `json:"mac"`
+	Vlan        string     `json:"vlan"`
+	InnerVlan   string     `json:"innerVlan"`
+	OuterTpid   string     `json:"outerTpid"`
+	Configured  bool       `json:"configured"`
+	Suspended   bool       `json:"suspended"`
+	IPAddresses []string   `json:"ipAddresses"`
+	Locations   []Location `json:"locations,omitempty"`
+}
+
+type Location struct {
+	ElementID string `json:"elementId"`
+	Port      string `json:"port"`
+}

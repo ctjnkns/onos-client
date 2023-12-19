@@ -652,7 +652,7 @@ func TestCreateIntent_ReturnExpectedJSON(t *testing.T) {
 	}
 }
 
-func TestCUpdateIntent_ReturnExpectedJSON(t *testing.T) {
+func TestUpdateIntent_ReturnExpectedJSON(t *testing.T) {
 	want := Intent{
 		AppID:     "org.onosproject.cli",
 		ID:        "0x300154",
