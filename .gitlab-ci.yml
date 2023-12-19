@@ -12,7 +12,7 @@ test:
 
 linter:
   stage: test
-  image: golangci/golangci-lint:v1.50.1
+  image: golangci/golangci-lint:v1.55.2
   before_script:
     - go mod download
   script:
