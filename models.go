@@ -25,8 +25,8 @@ type Flow struct {
 }
 
 type Instruction struct {
-	Port string `json:"port",omitempty`
-	Type string `json:"type",omitempty`
+	Port string `json:"port,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
 type Intents struct {

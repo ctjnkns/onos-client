@@ -2,7 +2,6 @@ package onosclient
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -68,7 +67,7 @@ func TestParseIntent_CorrectJSON(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		testname := fmt.Sprintf("%s", tt.Key)
+		testname := tt.Key
 		t.Run(testname, func(t *testing.T) {
 			if got.AppID != tt.AppID {
 				t.Errorf("Got AppID: %s,, wanted: %s", got.AppID, tt.AppID)
@@ -174,7 +173,7 @@ func TestParseIntents_CorrectJSON(t *testing.T) {
 			t.Fatal(errors.New("Incorrect number of intents in response"))
 		}
 		for i, tt := range subtest.Intents {
-			testname := fmt.Sprintf("%s", tt.Key)
+			testname := tt.Key
 			t.Run(testname, func(t *testing.T) {
 				if got.Intents[i].AppID != tt.AppID {
 					t.Errorf("Got AppID: %s,, wanted: %s", got.Intents[i].AppID, tt.AppID)
@@ -524,7 +523,7 @@ func TestGetIntents_ReturnExpectedJSON(t *testing.T) {
 		t.Fatal(errors.New("Incorrect number of intents in response"))
 	}
 	for i, intent := range want.Intents {
-		testname := fmt.Sprintf("%s", intent.Key)
+		testname := intent.Key
 		t.Run(testname, func(t *testing.T) {
 			if got.Intents[i].AppID != intent.AppID {
 				t.Errorf("Got AppID: %s,, wanted: %s", got.Intents[i].AppID, intent.AppID)
