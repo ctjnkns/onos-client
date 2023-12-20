@@ -73,8 +73,8 @@ func (c *Client) GetIntent(intent Intent) (Intent, error) {
 
 func (c *Client) CreateIntent(intent Intent) (Intent, error) {
 	resp := Intent{}
-	if intent.AppID == "" || intent.Type == "" || intent.One == "" || intent.Two == "" {
-		return resp, errors.New("invalid intent; must include AppID, Type, One, Two")
+	if intent.AppID == "" || intent.Type == "" || intent.One == "" || intent.Two == "" || intent.Key == "" {
+		return resp, errors.New("invalid intent; must include AppID, Type, One, Two, Key")
 	}
 
 	rb, err := json.Marshal(intent)
@@ -99,6 +99,7 @@ func (c *Client) CreateIntent(intent Intent) (Intent, error) {
 		}
 		time.Sleep(250 * time.Millisecond)
 		resp, err = c.GetIntent(intent)
+		attempts++
 	}
 	if err != nil {
 		return resp, err
@@ -138,6 +139,7 @@ func (c *Client) UpdateIntent(intent Intent) (Intent, error) {
 		if err != nil {
 			return resp, err
 		}
+		attempts++
 	}
 
 	return resp, nil
