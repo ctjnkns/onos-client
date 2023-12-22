@@ -30,7 +30,7 @@ build:
     - pwd
     - whoami
     - cd /root
-    - /root/onos/bin/onos-service server &
+    - /root/onos/bin/onos-service server 2>1 &
     - sleep 10
     #- /ENTRYPOINT.sh    
     - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
