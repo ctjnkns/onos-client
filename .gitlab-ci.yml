@@ -1,11 +1,10 @@
-image: golang
-
 stages:
   - test
   - build
 
 test:
   stage: test
+  image: golang
   before_script:
     - go mod download
   script:
@@ -21,8 +20,8 @@ linter:
 
 build:
   stage: build
-  image: ctjnkns/onos-mininet:2.7
-  script:
+  image: ctjnkns/onos-mininet:0.1.0
+  before_script:
     - /ENTRYPOINT.sh
     - |
       curl --request POST \
@@ -34,4 +33,6 @@ build:
       --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
       --header 'Accept: application/json' \
       --header 'Authorization: Basic b25vczpyb2Nrcw=='
+  script:
+    - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
 
