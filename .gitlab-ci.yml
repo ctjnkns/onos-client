@@ -2,6 +2,7 @@ image: golang
 
 stages:
   - test
+  - build
 
 test:
   stage: test
@@ -17,3 +18,18 @@ linter:
     - go mod download
   script:
     - golangci-lint run ./...
+
+build:
+  stage: build
+  image: ctjnkns/onos-mininet:2.7
+  script:
+    - /ENTRYPOINT.sh
+    - curl --request POST \
+      --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
+      --header 'Accept: application/json' \
+      --header 'Authorization: Basic b25vczpyb2Nrcw=='
+    - curl --request POST \
+      --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
+      --header 'Accept: application/json' \
+      --header 'Authorization: Basic b25vczpyb2Nrcw=='
+
