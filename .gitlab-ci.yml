@@ -33,7 +33,7 @@ build:
     #- sleep 10
     #- /ENTRYPOINT.sh    
     - service openvswitch-switch start
-    - ovs-vsctl set-manager ptcp:6640
+    - ovs-vsctl set-manager ptcp:6640 &
     - service openvswitch-switch stop &
     - /root/onos/bin/onos-service server 2>1 &    
     - |
