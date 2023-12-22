@@ -30,12 +30,12 @@ build:
     - cd /root
     - pwd
     - whoami
-    #- sleep 10
     #- /ENTRYPOINT.sh    
     - service openvswitch-switch start
     - ovs-vsctl set-manager ptcp:6640 &
     - service openvswitch-switch stop &
-    - /root/onos/bin/onos-service server 2>1 &    
+    - /root/onos/bin/onos-service server 2>1 &   
+    - sleep 30 
     - |
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
