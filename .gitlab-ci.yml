@@ -29,6 +29,7 @@ build:
     - echo "Before Script!"
     - pwd
     - whoami
+    - cd /root
     - /root/onos/bin/onos-service server &
     - sleep 10
     - /ENTRYPOINT.sh    
