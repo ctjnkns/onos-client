@@ -24,6 +24,7 @@ build:
     name: ctjnkns/onos-mininet:0.1.0
     entrypoint: [""]
   before_script:
+    - echo "Before Script!"
     - /root/onos/bin/onos-service server &
     - sleep 10
     - /ENTRYPOINT.sh
