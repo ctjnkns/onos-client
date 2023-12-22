@@ -34,7 +34,7 @@ build:
     #- /ENTRYPOINT.sh    
     - service openvswitch-switch start
     - ovs-vsctl set-manager ptcp:6640
-    - service openvswitch-switch stop
+    - service openvswitch-switch stop &
     - /root/onos/bin/onos-service server 2>1 &    
     - |
       curl --request POST \
