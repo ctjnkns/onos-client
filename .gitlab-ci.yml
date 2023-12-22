@@ -22,7 +22,7 @@ build:
   stage: build
   image: 
     name: ctjnkns/onos-mininet:0.1.0
-    entrypoint: [""]
+    entrypoint: ["/bin/bash"]
   before_script:
     - echo "Before Script!"
     - /root/onos/bin/onos-service server &
