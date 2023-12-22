@@ -28,6 +28,7 @@ build:
     - /root/onos/bin/onos-service server &
     - sleep 10
     - /ENTRYPOINT.sh
+    - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
     - |
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
