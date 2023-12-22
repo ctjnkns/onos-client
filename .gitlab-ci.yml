@@ -22,12 +22,12 @@ build:
   stage: build
   image: 
     name: ctjnkns/onos-mininet:0.1.0
-    entrypoint: ["/bin/bash"]
+    entrypoint: ["/bin/sh"]
   before_script:
     - echo "Before Script!"
     - /root/onos/bin/onos-service server &
     - sleep 10
-    #- /ENTRYPOINT.sh    
+    - /ENTRYPOINT.sh    
     - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
     - |
       curl --request POST \
