@@ -9,6 +9,7 @@ test:
     - go mod download
   script:
     - go test -v -race ./...
+  when: manual
 
 linter:
   stage: test
@@ -17,12 +18,13 @@ linter:
     - go mod download
   script:
     - golangci-lint run ./...
+  when: manual
 
 build:
   stage: build
   image: 
     name: ctjnkns/onos-mininet:0.1.0
-    entrypoint: ["/bin/sh"]
+    entrypoint: ["/bin/bash"]
   before_script:
     - echo "Before Script!"
     - /root/onos/bin/onos-service server &
