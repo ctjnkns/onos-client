@@ -60,7 +60,7 @@ build mininet :
 
 build onos:
   stage: build
-  image: projectonos/onos
+  image: onosproject/onos
   script:
     - |
       curl --request POST \
