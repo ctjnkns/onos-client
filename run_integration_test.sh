@@ -1,5 +1,6 @@
 #!/bin/sh
 docker compose up &
+sleep 30
 curl --request POST \
     --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
     --header 'Accept: application/json' \
