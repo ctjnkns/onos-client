@@ -22,10 +22,9 @@ linter:
 
 build:
   stage: build
-  image: 
-    name: ctjnkns/onos-mininet:2.7
+  image:
+    name: cjtnkns/onos-mininet:0.1.0
     entrypoint: [""]
-
   script:
     #- /ENTRYPOINT.sh
     - |
@@ -38,4 +37,3 @@ build:
       --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
       --header 'Accept: application/json' \
       --header 'Authorization: Basic b25vczpyb2Nrcw=='
-    - 
