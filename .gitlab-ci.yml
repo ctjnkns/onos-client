@@ -1,6 +1,6 @@
 stages:
   - test
-  - build
+  - integration_test
 
 test:
   stage: test
@@ -20,25 +20,13 @@ linter:
     - golangci-lint run ./...
   when: manual
 
-build:
-  stage: build
-  image: 
-    name: ctjnkns/onos-mininet:0.1.0
-    entrypoint: [""]
+integration test:
+  stage: integration_test
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    #- /ENTRYPOINT.sh
-    - /root/onos/bin/onos-service server 2>1 &  
-    - sleep 30
-    - |
-      curl --request POST \
-      --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
-      --header 'Accept: application/json' \
-      --header 'Authorization: Basic b25vczpyb2Nrcw=='
-    - |
-      curl --request POST \
-      --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
-      --header 'Accept: application/json' \
-      --header 'Authorization: Basic b25vczpyb2Nrcw=='
-    - sleep 15
-    - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
+    - sh ./run_integration_test.sh
+  after_script:
+    - docker compose stop
   when: manual
