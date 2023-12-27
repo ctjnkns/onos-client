@@ -28,6 +28,7 @@ build:
   script:
     #- /ENTRYPOINT.sh
     - /root/onos/bin/onos-service server 2>1 &  
+    - sleep 30
     - |
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
