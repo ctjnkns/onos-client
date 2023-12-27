@@ -22,20 +22,13 @@ linter:
 
 build:
   stage: build
-  image: 
-    name: ctjnkns/onos-mininet:0.1.0
-    entrypoint: [""]
+  image: docker:latest
+  services:
+    - docker:dind
   before_script:
-    - echo "Before Script!"
-    - cd /root
-    - pwd
-    - whoami
-    #- /ENTRYPOINT.sh    
-    - service openvswitch-switch start
-    - ovs-vsctl set-manager ptcp:6640 &
-    - service openvswitch-switch stop &
-    - /root/onos/bin/onos-service server 2>1 &   
-    - sleep 30 
+    - apt-get install mininet  
+    - docker pull onosproject/onos:2.7-latest
+    - docker run -t -d -p 8181:8181 -p 8101:8101 -p 5005:5005 -p 830:830 -p 9876:9876 -p 6653:6653 -p 6640:6640 --name onos onosproject/onos:2.7-latest
     - |
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
@@ -45,30 +38,10 @@ build:
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
       --header 'Accept: application/json' \
-      --header 'Authorization: Basic b25vczpyb2Nrcw=='
+      --header 'Authorization: Basic b25vczpyb2Nrcw=='    
   script:
     - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
-  when: manual
 
 
-build mininet :
-  stage: build
-  image: 
-    name: iwaseyusuke/mininet
-  script:
-    - mn
 
-build onos:
-  stage: build
-  image: onosproject/onos
-  script:
-    - |
-      curl --request POST \
-      --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
-      --header 'Accept: application/json' \
-      --header 'Authorization: Basic b25vczpyb2Nrcw=='
-    - |
-      curl --request POST \
-      --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
-      --header 'Accept: application/json' \
-      --header 'Authorization: Basic b25vczpyb2Nrcw=='
+
