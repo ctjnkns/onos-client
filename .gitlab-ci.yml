@@ -25,6 +25,8 @@ integration test:
   image: docker:latest
   services:
     - docker:dind
+  before_script:
+    - apk --no-cache add curl    
   script:
     - sh ./run_integration_test.sh
   after_script:
