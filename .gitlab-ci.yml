@@ -25,8 +25,13 @@ build:
   image: 
     name: ctjnkns/onos-mininet:0.1.0
     entrypoint: [""]
-  script:
-    #- /ENTRYPOINT.sh
+  before_script:
+    - echo "Before Script!"
+    - cd /root
+    - pwd
+    - whoami
+    - /root/onos/bin/onos-service server 2>1 &   
+    - sleep 30 
     - |
       curl --request POST \
       --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
@@ -37,4 +42,6 @@ build:
       --url http://localhost:8181/onos/v1/applications/org.onosproject.openflow/active \
       --header 'Accept: application/json' \
       --header 'Authorization: Basic b25vczpyb2Nrcw=='
-  when: manual
+  script:
+    - mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14  --controller remote,ip=127.0.0.1
+
