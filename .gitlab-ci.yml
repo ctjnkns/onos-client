@@ -23,7 +23,7 @@ linter:
 build:
   stage: build
   image:
-    name: cjtnkns/onos-mininet:0.1.0
+    name: ctjnkns/onos-mininet:0.1.0
     entrypoint: [""]
   script:
     #- /ENTRYPOINT.sh
