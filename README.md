@@ -394,7 +394,7 @@ if err != nil {
 ## Testing & CI/CD
 
 ### Lint Tests
-Linting is performed using golangci-lint using a variety of best-practive linters configured in .golangci.toml. Lint tests are run automatically as part of the CI/CD pipeline in GitHub Actions and GitLab CI. 
+Linting is performed using golangci-lint with a variety of best-practive linters configured in .golangci.toml. Lint tests are run automatically as part of the CI/CD pipeline in GitHub Actions and GitLab CI. 
 
 ### Unit Tests 
 Unit tests have been created for each function using sample json output saved in the testdata directory. The test data can also be useful as an example of expected output from each API call.
