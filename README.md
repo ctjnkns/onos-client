@@ -7,7 +7,7 @@ These examples require a current version of [go](https://go.dev/doc/install) and
 ### Docker Environment Setup
 Navigate to the examples directory and run:
 
-```bash
+```shell
 sudo docker compose up
 ```
 
@@ -15,7 +15,7 @@ This runs onos and mininet in docker containers and links them.
 
 From a new terminal, paste in the following curl commands to activate openflow and fwd in ONOS:
 
-```bash
+```shell
 curl --request POST \
 --url http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active \
 --header 'Accept: application/json' \
@@ -37,19 +37,19 @@ The calls should return output similar to this, indicating the activation was su
 
 Launch a terminal in the Mininet container:
 
-```bash
+```shell
 sudo docker exec -it mininet-compose /bin/bash
 ```
 
 Start a basic mininet topology with onos as the SDN controller:
 
-```bash
+```shell
 mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14 --controller remote,ip=onos-compose
 ```
 
 Mininet should successfully connect to the ONOS controller, start the switches and hosts, and display the mininet CLI prompt:
 
-```bash
+```shell
 root@c0b74ca1c8a7:~# mn --topo tree,2,2 --mac --switch ovs,protocols=OpenFlow14   --controller remote,ip=onos-compose
 *** Error setting resource limits. Mininet's performance may be affected.
 *** Creating network
@@ -72,7 +72,7 @@ mininet>
 ```
 
 From the mininet CLI, run pingall and confirm that all hosts can communicate:
-```bash
+```shell
 mininet> pingall
 *** Ping: testing ping reachability
 h1 -> h2 h3 h4 
@@ -83,14 +83,14 @@ h4 -> h1 h2 h3
 ```
 
 Switch to an ubuntu terminal (not the mininet container) and paste in the following curl command to deactivate onos fwd:
-```bash
+```shell
 curl -X DELETE --header 'Accept: application/json' 'http://localhost:8181/onos/v1/applications/org.onosproject.fwd/active'
 ```
 
 This disables reactive forwarding in the onos controller, causing to to behave more like a firewall than a router.
 
 From the mininet CLI, run pingall again and confirm that the traffic is now being blocked:
-```bash
+```shell
 mininet> pingall
 *** Ping: testing ping reachability
 h1 -> X X X 
@@ -100,10 +100,10 @@ h4 -> X X X
 *** Results: 100% dropped (0/12 received)
 ```
 
-### Examples Demonstration 
+### API Client Demonstration 
 
 #### Hosts
-```bash
+```shell
 go run hosts-get-example.go
 ```
 
@@ -113,7 +113,7 @@ There should be several hosts listed:
 ```
 
 #### Flows
-```bash
+```shell
 go run flows-get-example.go
 ```
 
@@ -125,7 +125,7 @@ There should be flows representing connections between the hosts and switches:
 If you do not see any flows, run pingall from the mininet terminal to refresh the flows table and try again.
 
 #### Intents
-```bash
+```shell
 go run intents-get-example.go
 ```
 
@@ -135,7 +135,7 @@ There should not be any intents listed since none have been created:
 ```
 
 ##### Create an Intent
-```bash
+```shell
 go run intent-create-example.go
 ```
 
@@ -158,7 +158,7 @@ The new intent should be returned from ONOS:
 **Note: if the "One" and "Two" strings do not match any hosts from your hosts output above, the intent may fail to install. Edit the struct in intent-create-example.go to match two of the hosts in your environment.**
 
 From the mininet CLI, test connectivity again and confirm that the traffic between h1 and h2 is now allowed:
-```bash
+```shell
 mininet> h1 ping -c 4 h2
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.147 ms
@@ -172,7 +172,7 @@ rtt min/avg/max/mdev = 0.038/0.065/0.147/0.047 ms
 ```
 
 Confirm that traffic not allowed by the intent is still blocked:
-```bash
+```shell
 mininet> h1 ping -c 4 h3
 PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
 
@@ -181,7 +181,7 @@ PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
 ```
 
 #### Get a specific Inent
-```bash
+```shell
 go run intent-get-example.go
 ```
 
@@ -199,7 +199,7 @@ The intent details should be returned from ONOS:
 ```
 
 #### Update the intent
-```bash
+```shell
 go run intent-update-example.go
 ```
 
@@ -216,7 +216,7 @@ This updates the intent to allow h1 and h3 to communicate.
 **Note: if the "One" and "Two" strings do not match any hosts from your hosts output above, edit the struct in intent-create-example.go.**
 
 From the mininet CLI, test connectivity again and confirm that the traffic between h1 and h2 is now blocked:
-```bash
+```shell
 mininet> h1 ping -c 4 h2
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 From 10.0.0.1 icmp_seq=1 Destination Host Unreachable
@@ -230,7 +230,7 @@ pipe 4
 ```
 
 Confirm that traffic from h1 to h3 is now allowed:
-```bash
+```shell
 mininet> h1 ping -c 4 h3
 PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
 64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.512 ms
@@ -244,7 +244,7 @@ rtt min/avg/max/mdev = 0.042/0.168/0.512/0.198 ms
 ```
 
 #### Delete the intent
-```bash
+```shell
 go run intent-delete-example.go
 ```
 
@@ -274,7 +274,7 @@ if err != nil {
 ```
 
 #### Creating a client using Environment Variables
-```bash
+```shell
 #bash
 export ONOS_HOST=http://localhost:8181/onos/
 export ONOS_USERNAME=onos
@@ -401,7 +401,7 @@ Unit tests have been created for each function using sample json output saved in
 
 The Unit Test are run automatically using GitHub Actions and Gitlab CI.
 
-```bash
+```shell
 onos-client-go$ go test -v ./...
 === RUN   TestParseHosts_CorrectJSON
 === RUN   TestParseHosts_CorrectJSON/00:00:00:00:00:03/None
