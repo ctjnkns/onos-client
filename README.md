@@ -1,6 +1,138 @@
 # ONOS Client
 This is a Go client for interacting with the [ONOS](https://opennetworking.org/onos/) API. It was developed alongside the [ONOS Terraform Provider](https://github.com/ctjnkns/terraform-provider-onos).
 
+## Basic Usage
+Working examples are located in the examples direcotry. The folloiwng are snippets to demonstrate basic usage.
+
+#### Creating a client
+```go
+const HostURL string = "http://localhost:8181/onos/v1"
+username := "onos"
+password := "rocks"
+
+client, err := onosclient.NewClient(HostURL, username, password)
+if err != nil {
+    fmt.Println(err)
+}
+```
+
+#### Creating a client using Environment Variables
+```shell
+#bash
+export ONOS_HOST=http://localhost:8181/onos/
+export ONOS_USERNAME=onos
+export ONOS_PASSWORD=rocks
+```
+
+```go
+host := os.Getenv("ONOS_HOST")
+username := os.Getenv("ONOS_USERNAME")
+password := os.Getenv("ONOS_PASSWORD")
+
+client, err := onosclient.NewClient(host, username, password)
+if err != nil {
+    fmt.Println(err)
+}
+```
+
+#### Get Hosts
+```go
+hosts, err := client.GetHosts()
+if err != nil {
+    fmt.Println(err)
+}
+
+fmt.Println(hosts)
+```
+
+#### Get Flows
+```go
+flows, err := client.GetFlows()
+if err != nil {
+    fmt.Println(err)
+}
+
+fmt.Println(flows)
+```
+
+#### Get Intents
+```go
+intents, err := client.GetIntents()
+if err != nil {
+    fmt.Println(err)
+}
+
+fmt.Println(intents)
+```
+
+#### Get a single Intent
+The AppID and Key are required to lookup the intent in ONOS.
+
+```go
+intent := onosclient.Intent{
+    AppID: "org.onosproject.cli",
+    Key:   "0x300009",
+}
+
+intent, err = client.GetIntent(intent)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(intent)
+```
+
+#### Create an Intent
+
+```go
+intent := onosclient.Intent{
+    Type:  "HostToHostIntent",
+    AppID: "org.onosproject.cli",
+    Key:   "0x300009",
+    One:   "00:00:00:00:00:01/None",
+    Two:   "00:00:00:00:00:02/None",
+}
+
+intent, err = client.CreateIntent(intent)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(intent)
+```
+
+#### Update an Intent
+The AppID and Key must match an exisitng intent in ONOS.
+
+```go
+intent := onosclient.Intent{
+    Type:  "HostToHostIntent",
+    AppID: "org.onosproject.cli",
+    Key:   "0x300009",
+    One:   "00:00:00:00:00:01/None",
+    Two:   "00:00:00:00:00:03/None",
+}
+
+intent, err = client.UpdateIntent(intent)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(intent)
+```
+
+#### Delete an Intent
+The AppID and Key are required to lookup the intent in ONOS.
+
+```go
+intent := onosclient.Intent{
+    AppID: "org.onosproject.cli",
+    Key:   "0x300009",
+}
+
+err = client.DeleteIntent(intent)
+if err != nil {
+    fmt.Println(err)
+}
+```
+
 ## Example Using Docker Containers running on Linux (Ubuntu 22.04.3 LTS)
 These examples require a current version of [go](https://go.dev/doc/install) and [docker](https://docs.docker.com/engine/install/ubuntu/).
 
@@ -256,140 +388,6 @@ This looks up an intent with the following AppID and Key, and removes it:
 }
 ```
 Re-run intents-get-example.go or intent-get-example and confirm that the intent is no longer there.
-
-
-### Basic Usage
-Working examples are located in the examples direcotry. The folloiwng are snippets to demonstrate basic usage.
-
-#### Creating a client
-```go
-const HostURL string = "http://localhost:8181/onos/v1"
-username := "onos"
-password := "rocks"
-
-client, err := onosclient.NewClient(HostURL, username, password)
-if err != nil {
-    fmt.Println(err)
-}
-```
-
-#### Creating a client using Environment Variables
-```shell
-#bash
-export ONOS_HOST=http://localhost:8181/onos/
-export ONOS_USERNAME=onos
-export ONOS_PASSWORD=rocks
-```
-
-```go
-host := os.Getenv("ONOS_HOST")
-username := os.Getenv("ONOS_USERNAME")
-password := os.Getenv("ONOS_PASSWORD")
-
-client, err := onosclient.NewClient(host, username, password)
-if err != nil {
-    fmt.Println(err)
-}
-```
-
-#### Get Hosts
-```go
-hosts, err := client.GetHosts()
-if err != nil {
-    fmt.Println(err)
-}
-
-fmt.Println(hosts)
-```
-
-#### Get Flows
-```go
-flows, err := client.GetFlows()
-if err != nil {
-    fmt.Println(err)
-}
-
-fmt.Println(flows)
-```
-
-#### Get Intents
-```go
-intents, err := client.GetIntents()
-if err != nil {
-    fmt.Println(err)
-}
-
-fmt.Println(intents)
-```
-
-#### Get a single Intent
-The AppID and Key are required to lookup the intent in ONOS.
-
-```go
-intent := onosclient.Intent{
-    AppID: "org.onosproject.cli",
-    Key:   "0x300009",
-}
-
-intent, err = client.GetIntent(intent)
-if err != nil {
-    fmt.Println(err)
-}
-fmt.Println(intent)
-```
-
-#### Create an Intent
-
-```go
-intent := onosclient.Intent{
-    Type:  "HostToHostIntent",
-    AppID: "org.onosproject.cli",
-    Key:   "0x300009",
-    One:   "00:00:00:00:00:01/None",
-    Two:   "00:00:00:00:00:02/None",
-}
-
-intent, err = client.CreateIntent(intent)
-if err != nil {
-    fmt.Println(err)
-}
-fmt.Println(intent)
-```
-
-#### Update an Intent
-The AppID and Key must match an exisitng intent in ONOS.
-
-```go
-intent := onosclient.Intent{
-    Type:  "HostToHostIntent",
-    AppID: "org.onosproject.cli",
-    Key:   "0x300009",
-    One:   "00:00:00:00:00:01/None",
-    Two:   "00:00:00:00:00:03/None",
-}
-
-intent, err = client.UpdateIntent(intent)
-if err != nil {
-    fmt.Println(err)
-}
-fmt.Println(intent)
-```
-
-#### Delete an Intent
-The AppID and Key are required to lookup the intent in ONOS.
-
-```go
-intent := onosclient.Intent{
-    AppID: "org.onosproject.cli",
-    Key:   "0x300009",
-}
-
-err = client.DeleteIntent(intent)
-if err != nil {
-    fmt.Println(err)
-}
-```
-
 
 ## Testing & CI/CD
 
